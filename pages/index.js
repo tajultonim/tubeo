@@ -1,11 +1,7 @@
 import Head from "next/head";
-import Image from "next/image";
 import Header from "../components/Header";
 import styles from "../styles/Home.module.css";
-import { useSession, getSession } from "next-auth/client";
-import Hero from "../components/Hero";
 import Slider from "../components/Slider";
-import Brands from "../components/Brands";
 import MoviesCollection from "../components/MoviesCollection";
 import ShowsCollection from "../components/ShowsCollection";
 
@@ -16,36 +12,30 @@ export default function Home({
   top_ratedMovies,
   top_ratedShows,
 }) {
-  // console.log(nowPlayingMovies)
-  const [session] = useSession();
-
   return (
     <div className={styles.container}>
       <Head>
-        <title>Disney+</title>
-        <link rel="icon" href="/favicon.svg" />
+        <title>TUBEO: Stream boundless</title>
+        <link rel="icon" href="/favicon.png" />
       </Head>
       <Header />
-      {!session ? (
-        <Hero />
-      ) : (
-        <main className="relative min-h-screen after:bg-home after:bg-center after:bg-cover after:bg-no-repeat after:bg-fixed after:absolute after:inset-0 after:z-[-1]">
-          <Slider />
-          <Brands />
-          <MoviesCollection results={nowPlayingMovies} title="Now Playing Movies"/>
-          <MoviesCollection results={popularMovies} title="Popular Movies"/>
-          <ShowsCollection results={popularShows} title="Popular Shows"/>
-          <MoviesCollection results={top_ratedMovies} title="Top Rated Movies"/>
-          <ShowsCollection results={top_ratedShows} title="Top Rated Shows"/>
-        </main>
-      )}
+
+      <main className="relative min-h-screen after:bg-home after:bg-center after:bg-cover after:bg-no-repeat after:bg-fixed after:absolute after:inset-0 after:z-[-1]">
+        <Slider />
+        <MoviesCollection
+          results={nowPlayingMovies}
+          title="Now Playing Movies"
+        />
+        <MoviesCollection results={popularMovies} title="Popular Movies" />
+        <ShowsCollection results={popularShows} title="Popular Shows" />
+        <MoviesCollection results={top_ratedMovies} title="Top Rated Movies" />
+        <ShowsCollection results={top_ratedShows} title="Top Rated Shows" />
+      </main>
     </div>
   );
 }
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context);
-
   const [
     nowPlayingMoviesRes,
     popularMoviesRes,
@@ -85,7 +75,6 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      session,
       nowPlayingMovies: nowPlayingMovies.results,
       popularMovies: popularMovies.results,
       popularShows: popularShows.results,
