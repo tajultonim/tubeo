@@ -259,7 +259,6 @@ function Show({ result }) {
                 {showMov && (
                   <iframe
                     id="frame"
-                    sandbox={true}
                     className=" w-full h-full"
                     style={{ position: "absolute", top: "0", left: "0" }}
                     allowFullScreen={true}
