@@ -29,16 +29,20 @@ function MovieThumbnail({ result }) {
       }
     >
       <a>
-        <div className="flex min-w-[250px] min-h-[170px] md:min-w-[330px] md:min-h-[210px] rounded-lg overflow-hidden shadow-xl cursor-pointer border-[3px] border-[#f9f9f9] border-opacity-10  hover:border-opacity-80 hover:shadow-2xl transform hover:scale-105 transition duration-300">
+        <div className="flex min-w-[250px] min-h-[170px] md:min-w-[330px] md:min-h-[210px] rounded-lg overflow-hidden shadow-xl cursor-pointer border-[3px] border-[#f9f9f9] border-opacity-10  hover:border-opacity-80 hover:shadow-2xl transform hover:scale-105 transition duration-300 bg-cover">
           <Image
             src={`${BASE_URL}${result.backdrop_path || result.poster_path}`}
             width={330}
             height={210}
             objectFit="cover"
             className="rounded-lg"
-            alt="poster"
+            alt={result.original_title+" poster"}
+            quality={50}
           />
-          {/* <h2>{result.original_title}</h2> */}
+          <h2 className=" absolute bottom-0 left-0 pl-1 w-full bg-gradient-to-t from-black">
+            {result.title || result.original_title} (
+            {new Date(result.release_date).getFullYear()})
+          </h2>
         </div>
       </a>
     </Link>

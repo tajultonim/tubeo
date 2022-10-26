@@ -14,9 +14,9 @@ function Header() {
   const router = useRouter();
 
   return (
-    <header className="sticky bg-[#040714] top-0 z-[1000] flex items-center px-10 md:px-12 h-[72px] ">
+    <header className="sticky bg-[#040714] top-0 z-[1000] flex items-center px-3 md:px-12 h-[72px] ">
       <Link href={"/"}>
-        <a>
+        <a className=" h-full items-center flex">
           {" "}
           <Image
             className="cursor-pointer"
@@ -28,6 +28,14 @@ function Header() {
           />
         </a>
       </Link>
+
+      <div className="flex md:hidden flex-1 justify-end">
+        <Link href={"/search"}>
+          <a className="header-link group bg-gray-900 hover:bg-gray-700 p-2 rounded-md">
+            <SearchIcon className="h-6" />
+          </a>
+        </Link>
+      </div>
 
       <div className="hidden ml-10 md:flex items-center space-x-6">
         <Link href={"/"}>

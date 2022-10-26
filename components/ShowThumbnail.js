@@ -39,12 +39,17 @@ function ShowThumbnail({ result }) {
               `${BASE_URL}${result.backdrop_path || result.poster_path}` ||
               `${BASE_URL}${result.poster_path}`
             }
-            alt="poster"
+            alt={result.name+" poster"}
             width={330}
             height={210}
             objectFit="cover"
             className="rounded-lg"
+            quality={50}
           />
+          <h2 className=" absolute bottom-0 left-0 pl-1 w-full bg-gradient-to-t from-black">
+            {result.name} (
+            {new Date(result.first_air_date).getFullYear()})
+          </h2>
         </div>
       </a>
     </Link>

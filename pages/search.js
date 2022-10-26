@@ -1,7 +1,6 @@
 import Head from "next/head";
 import axios from "axios";
 import { useState } from "react";
-import Header from "../components/Header";
 import { SearchIcon } from "@heroicons/react/solid";
 import Image from "next/image";
 import Link from "next/link";
@@ -23,14 +22,13 @@ function Search() {
 
   return (
     <>
-      <Header />
       <Head>
         <title>Search | TUBEO</title>
-        <link rel="icon" href="/favicon.svg" />
+        <link rel="icon" href="/favicon.png" />
       </Head>
-      <div className="flex items-center justify-center mt-3">
-        <div className="flex flex-col w-full items-center">
-          <div className="w-full flex max-w-xl">
+      <div className="flex justify-center pt-3 bg-slate-900">
+        <div className="flex flex-col w-full items-center px-2">
+          <div className="w-full flex max-w-xl ">
             <input
               className={`w-full pl-3 p-2 text-gray-900 outline-none ${
                 movies.length ? "rounded-tl-lg" : "rounded-l-lg"
@@ -50,7 +48,7 @@ function Search() {
             </div>
           </div>
           <div className=" w-full flex justify-center">
-            <div className="w-full max-w-xl bg-gray-700">
+            <div className="w-full max-w-xl bg-gray-700 rounded-b-md">
               {movies.map((m) => (
                 <MovieCard key={m.id} m={m} />
               ))}

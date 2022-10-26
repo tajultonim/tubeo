@@ -11,17 +11,22 @@ const getColors = require("get-image-colors");
 const BASE_URL = "https://image.tmdb.org/t/p/original/";
 import axios from "axios";
 
-function Movie({ result }) {
-  const BASE_URL = "https://image.tmdb.org/t/p/original/";
+function Show({ result }) {
+  let epcount = 0;
+  result.seasons.forEach((s) => {
+    epcount += s.episode_count;
+  });
   const router = useRouter();
   const [showPlayer, setShowPlayer] = useState(false);
   const [showMov, setShowMov] = useState(false);
+  const [wep, setWep] = useState(1);
+  const [wse, setWse] = useState(1);
   const index = result.videos.results.findIndex(
     (element) => element.type === "Trailer"
   );
   const [isInList, setIsInList] = useState(false);
-
   let accent = result.colors[0];
+
   useEffect(() => {
     let list = JSON.parse(localStorage.getItem("watchlist"));
     if (list) {
@@ -73,6 +78,7 @@ function Movie({ result }) {
           <title>{result.title || result.original_name} | TUBEO </title>
           <link rel="icon" href="/favicon.png" />
         </Head>
+
         <section className="relative z-50">
           <div className="relative min-h-[calc(100vh-72px)]">
             <Image
@@ -87,7 +93,7 @@ function Movie({ result }) {
           </div>
           <div className="absolute inset-y-28 md:inset-y-auto md:bottom-10 inset-x-4 md:inset-x-12 space-y-6 z-50">
             <h1
-              className="text-3xl sm:text-4xl md:text-5xl font-bold"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold "
               style={{ color: accent.isDark ? "white" : "black" }}
             >
               {result.title || result.original_name}
@@ -158,7 +164,7 @@ function Movie({ result }) {
               style={{ color: accent.isDark ? "white" : "black" }}
             >
               {result.release_date || result.first_air_date} •{" "}
-              {Math.floor(result.runtime / 60)}h {result.runtime % 60}m •{" "}
+              {result.seasons.length}S {epcount}E •{" "}
               {result.genres.map((genre) => genre.name + " ")} •{" "}
               {result.vote_average}/10
             </p>
@@ -176,7 +182,7 @@ function Movie({ result }) {
           )}
           <div>
             <div
-              className={`absolute top-3 inset-x-[7%] md:inset-x-[13%] rounded overflow-hidden transition duration-1000`}
+              className={`absolute top-3 inset-x-[1%] md:inset-x-[13%] rounded overflow-hidden transition duration-1000 `}
               style={{
                 opacity: showPlayer || showMov ? 1 : 0,
                 zIndex: showPlayer || showMov ? 50 : 0,
@@ -187,6 +193,47 @@ function Movie({ result }) {
                   {" "}
                   {showPlayer ? "Trailer" : showMov ? "Watch" : ""}
                 </span>
+                <div className="flex flex-1 pl-5 opacity-70">
+                  <div className="flex">
+                    <p>Season</p>
+                    <select
+                      className=" bg-gray-900 rounded-sm ml-1 cursor-pointer"
+                      defaultValue={wse}
+                      onChange={(e) => {
+                        setWse(parseInt(e.target.value));
+                      }}
+                    >
+                      {Array.from(Array(result.seasons.length).keys()).map(
+                        (i) => (
+                          <option value={i + 1} key={i}>
+                            {i + 1}
+                          </option>
+                        )
+                      )}
+                    </select>
+                  </div>
+                  <div className="flex ml-2">
+                    <p>Episode</p>
+                    <select
+                      className=" bg-gray-900 rounded-sm ml-1 cursor-pointer"
+                      defaultValue={wep}
+                      onChange={(e) => {
+                        setWep(parseInt(e.target.value));
+                        if (result.seasons[wse - 1].episode_count < wep) {
+                          setWep(1);
+                        }
+                      }}
+                    >
+                      {Array.from(
+                        Array(result.seasons[wse - 1].episode_count).keys()
+                      ).map((i) => (
+                        <option key={i} value={i + 1}>
+                          {i + 1}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
                 <div
                   className="cursor-pointer w-8 h-8 flex justify-center items-center rounded-lg opacity-50 hover:opacity-75 hover:bg-[#0F0F0F]"
                   onClick={() => {
@@ -216,9 +263,7 @@ function Movie({ result }) {
                     className=" w-full h-full"
                     style={{ position: "absolute", top: "0", left: "0" }}
                     allowFullScreen={true}
-                    src={
-                      "https://www.2embed.to/embed/tmdb/movie?id=" + result.id
-                    }
+                    src={`https://www.2embed.to/embed/tmdb/tv?id=${result.id}&s=${wse}&e=${wep}`}
                   ></iframe>
                 )}
               </div>
@@ -230,14 +275,14 @@ function Movie({ result }) {
   );
 }
 
-export default Movie;
+export default Show;
 
 export async function getServerSideProps(context) {
   let { id } = context.query;
   id = id.split("-")[id.split("-").length - 1];
 
   const request = await fetch(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.API_KEY}&language=en-US&append_to_response=videos`
+    `https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.API_KEY}&language=en-US&append_to_response=videos`
   ).then((response) => response.json());
 
   let url = `${BASE_URL}${request.backdrop_path || request.poster_path}`;

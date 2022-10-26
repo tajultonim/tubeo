@@ -18,7 +18,6 @@ export default function Home({
         <title>TUBEO: Stream boundless</title>
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <Header />
 
       <main className="relative min-h-screen after:bg-home after:bg-center after:bg-cover after:bg-no-repeat after:bg-fixed after:absolute after:inset-0 after:z-[-1]">
         <Slider />
@@ -31,6 +30,9 @@ export default function Home({
         <MoviesCollection results={top_ratedMovies} title="Top Rated Movies" />
         <ShowsCollection results={top_ratedShows} title="Top Rated Shows" />
       </main>
+      <footer className=" flex w-full justify-center -mt-6 pb-2">
+        Made with 💖 by TajulTonim
+      </footer>
     </div>
   );
 }
