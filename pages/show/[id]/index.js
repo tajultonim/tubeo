@@ -12,8 +12,11 @@ const BASE_URL = "https://image.tmdb.org/t/p/original/";
 import axios from "axios";
 
 function Show({ result }) {
+  let seasons = result.seasons.sort(
+    (a, b) => a.season_number - b.season_number
+  );
   let epcount = 0;
-  result.seasons.forEach((s) => {
+  seasons.forEach((s) => {
     epcount += s.episode_count;
   });
   const router = useRouter();
@@ -53,7 +56,6 @@ function Show({ result }) {
           title: result.title,
           type: "movie",
         });
-        console.log(nl);
         localStorage.setItem("watchlist", JSON.stringify(nl));
       }
     } else {
@@ -203,13 +205,16 @@ function Show({ result }) {
                         setWse(parseInt(e.target.value));
                       }}
                     >
-                      {Array.from(Array(result.seasons.length).keys()).map(
-                        (i) => (
-                          <option value={i + 1} key={i}>
-                            {i + 1}
-                          </option>
-                        )
-                      )}
+                      {seasons.map((s) => (
+                        <option value={s.season_number} key={s.season_number}>
+                          {s.season_number}
+                        </option>
+                      ))}
+                      {Array.from(Array(seasons.length).keys()).map((i) => (
+                        <option value={i + 1} key={i}>
+                          {i + 1}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   <div className="flex ml-2">
@@ -219,13 +224,19 @@ function Show({ result }) {
                       defaultValue={wep}
                       onChange={(e) => {
                         setWep(parseInt(e.target.value));
-                        if (result.seasons[wse - 1].episode_count < wep) {
+                        if (
+                          seasons.find((n) => n.season_number == wse)
+                            .episode_count < wep
+                        ) {
                           setWep(1);
                         }
                       }}
                     >
                       {Array.from(
-                        Array(result.seasons[wse - 1].episode_count).keys()
+                        Array(
+                          seasons.find((n) => n.season_number == wse)
+                            .episode_count
+                        ).keys()
                       ).map((i) => (
                         <option key={i} value={i + 1}>
                           {i + 1}
