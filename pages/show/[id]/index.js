@@ -210,11 +210,6 @@ function Show({ result }) {
                           {s.season_number}
                         </option>
                       ))}
-                      {Array.from(Array(seasons.length).keys()).map((i) => (
-                        <option value={i + 1} key={i}>
-                          {i + 1}
-                        </option>
-                      ))}
                     </select>
                   </div>
                   <div className="flex ml-2">
