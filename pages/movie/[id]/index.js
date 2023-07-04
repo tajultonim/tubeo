@@ -216,7 +216,7 @@ function Movie({ result }) {
                     style={{ position: "absolute", top: "0", left: "0" }}
                     allowFullScreen={true}
                     src={
-                      "https://www.2embed.to/embed/tmdb/movie?id=" + result.id
+                      "https://www.2embed.cc/embed/" + result.id
                     }
                   ></iframe>
                 )}

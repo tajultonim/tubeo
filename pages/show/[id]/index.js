@@ -268,7 +268,7 @@ function Show({ result }) {
                     className=" w-full h-full"
                     style={{ position: "absolute", top: "0", left: "0" }}
                     allowFullScreen={true}
-                    src={`https://www.2embed.to/embed/tmdb/tv?id=${result.id}&s=${wse}&e=${wep}`}
+                    src={`https://www.2embed.cc/embed/${result.id}?s=${wse}&e=${wep}`}
                   ></iframe>
                 )}
               </div>
