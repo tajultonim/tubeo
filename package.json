@@ -17,6 +17,7 @@
     "react-dom": "18.1.0",
     "react-player": "^2.10.0",
     "react-responsive-carousel": "3.2.23",
+    "sharp": "^0.32.6",
     "tailwind-scrollbar-hide": "^1.1.7"
   },
   "devDependencies": {

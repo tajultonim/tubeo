@@ -268,7 +268,7 @@ function Show({ result }) {
                     className=" w-full h-full"
                     style={{ position: "absolute", top: "0", left: "0" }}
                     allowFullScreen={true}
-                    src={`https://www.2embed.cc/embedtv/${result.id}?s=${wse}&e=${wep}`}
+                    src={`https://www.2embed.cc/embedtv/${result.external_ids.imdb_id}&s=${wse}&e=${wep}`}
                   ></iframe>
                 )}
               </div>
@@ -287,7 +287,7 @@ export async function getServerSideProps(context) {
   id = id.split("-")[id.split("-").length - 1];
 
   const request = await fetch(
-    `https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.API_KEY}&language=en-US&append_to_response=videos`
+    `https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.API_KEY}&language=en-US&append_to_response=videos,external_ids`
   ).then((response) => response.json());
 
   let url = `${BASE_URL}${request.backdrop_path || request.poster_path}`;
